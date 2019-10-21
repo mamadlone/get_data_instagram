@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Instagram Data</title>
+
+	<style>
+		@import url('https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap');
+		*{
+			font-family: 'Roboto Slab', sans-serif;
+			font-size: 24px;
+		}
+		#res{
+			line-height: 35px;
+		}
+		#pimg{
+			width: 250px;
+			height: 250px;
+		}
+		#img{
+			width: 100%;
+		}
+
+	</style>
+
+</head>
+<body>
+	Username : 
+	<input type="text" id="userid">
+	<button type="button" onclick="getData()">Get Data</button>
+
+	<p id="res"></p>
+	<div id="pimg">
+		<img src="" id="img" alt="">
+	</div>
+
+
+	<script>
+
+function getData(){
+var username = document.getElementById('userid').value;
+
+var url = 'https://instagram.com/'+username+'/?__a=1';
+
+
+var req;
+
+if(window.XMLHttpRequest){
+	req = new XMLHttpRequest();
+}else{
+	req = new ActiveXObject('Microsoft.XMLHTTP')
+}
+
+
+req.open('GET', url);
+
+req.onreadystatechange = function(){
+
+if(req.readyState === 4 && req.status === 200){
+
+
+var item = JSON.parse(req.responseText);
+
+var f = item.graphql.user;
+
+
+var us = f.username;
+var fn = f.full_name;
+var bio = f.biography;
+var flwing = f.edge_followed_by.count;
+var flwer = f.edge_follow.count;
+var pic = f.profile_pic_url_hd;
+
+
+var output = '<b><br>Username : </b>' + us + '<b><br>Fullname : </b>' + fn + '<b><br>Biography : </b>' + bio + '<b><br>Following : </b>' + flwing + '<b><br>Follower : </b>' + flwer;
+
+
+document.getElementById('res').innerHTML = output;
+document.getElementById('img').src = pic;
+
+}
+
+
+}
+
+
+
+
+req.send();
+}
+		
+
+	</script>
+
+</body>
+</html>
